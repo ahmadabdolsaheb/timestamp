@@ -1,16 +1,14 @@
 //imports
 var express = require('express')
-var bodyParser = require('body-parser')
-var cors = require('cors')
 var port = process.env.PORT || 3000;
-var isTimestamp = require( 'validate.io-timestamp' );
+
+//months array
 var monthNames = ["January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December"
 ];
-//create instance of express and instantiate body-parser and cors
+
+//create instance of express
 var app = module.exports = express();
-app.use(bodyParser.json())
-app.use(cors());
 
 //Get call to return json
 app.get('/:dateVal', function(req,res){
@@ -18,28 +16,22 @@ app.get('/:dateVal', function(req,res){
   var unix = null;
   var natural = null;
 
+// if the pharameter is a number prepare it to be acceptable by the date object
+  if(!isNaN(dateVal)){
+    dateVal = Number(dateVal) * 1000;
+  }
 
-  // if unix
-    if(isTimestamp( Number(dateVal))){
-      unix = Number(dateVal);
-      d = new Date(dateVal);
-      if(d.getMonth()){
-         natural = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-      }
+// date object
+  var  d = new Date(dateVal);
 
-  // if a natural date
-   }else{
-     unix = new Date(dateVal).getTime()/1000;
-     d = new Date(dateVal);
+// check if the date object is defined
+  if(d.getMonth()){
+           unix = d.getTime()/1000;
+           natural = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
 
-     if(d.getMonth()){
-        natural = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-     }
-
-   }
-
-
-  res.json({unix: unix, natural: natural});
+// respond a json
+    res.json({unix: unix, natural: natural});
 })
 
 
