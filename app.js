@@ -1,5 +1,5 @@
 //imports
-var express = require('express')
+var express = require('express');
 var port = process.env.PORT || 3000;
 
 //months array
@@ -26,8 +26,8 @@ app.get('/:dateVal', function(req,res){
 
 // check if the date object is defined
   if(d.getMonth()){
-           unix = d.getTime()/1000;
-           natural = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    unix = d.getTime()/1000;
+    natural = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   }
 
 // respond a json
@@ -36,6 +36,6 @@ app.get('/:dateVal', function(req,res){
 
 
 app.listen(port, function(){
-  console.log("listening for port: " + port);
+   console.log("listening for port: " + port);
 
 })
